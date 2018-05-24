@@ -12,8 +12,6 @@ package swagger
 
 import (
 	"net/http"
-	"os"
-	"strconv"
 )
 
 const ContextOAuth2 int = 1
@@ -44,15 +42,18 @@ type Configuration struct {
 }
 
 func NewConfiguration() *Configuration {
-	var _url string
-	if b, _ := strconv.ParseBool(os.Getenv("BITMEX_TESTNET")); !b {
-		_url = "https://www.bitmex.com/api/v1"
-	} else {
-		_url = "https://testnet.bitmex.com/api/v1"
-	}
-
 	cfg := &Configuration{
-		BasePath:      _url,
+		BasePath:      "https://www.bitmex.com/api/v1",
+		DefaultHeader: make(map[string]string),
+		UserAgent:     "Swagger-Codegen/1.0.0/go",
+		ExpireTime:    5, //seconds
+	}
+	return cfg
+}
+
+func NewTestConfiguration() *Configuration {
+	cfg := &Configuration{
+		BasePath:      "https://testnet.bitmex.com/api/v1",
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "Swagger-Codegen/1.0.0/go",
 		ExpireTime:    5, //seconds
